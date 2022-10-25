@@ -1,0 +1,8 @@
+#!/bin/bash
+docker run  -it \
+            -w /opt \
+            -v $(pwd)/:/opt/ \
+            -v ~/.ssh:/root/.ssh \
+            -v $(pwd)/.terraformrc:/root/.terraformrc \
+            hashicorp/terraform:latest $@
+

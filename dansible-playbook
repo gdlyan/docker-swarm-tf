@@ -1,0 +1,9 @@
+#!/bin/bash
+docker run  -it \
+            -w /opt \
+            -v $(pwd)/ansible/:/opt/ \
+            -v $(pwd)/app:/root/app/ \
+            -v ~/.ssh:/root/.ssh \
+            -e ANSIBLE_HOST_KEY_CHECKING=False \
+            cytopia/ansible:latest-tools \
+            ansible-playbook $@
