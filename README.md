@@ -11,7 +11,7 @@ The purpose of this configuration is to ease the learning curve of a full-stack 
 - Linux / MacOS / Windows with WSL2 machine connected to Internet
 - Docker and optionally Compose
 - A pair of ssh keys whereas a public key would be uploaded to the provisioned virtual machines. Please note that the current config fails with passphrase protected keys, so if your default ssh key pair is passphrase protected please be sure to generate a dedicated key pair. 
-- Yandex Cloud account that has a payment method activated [see how-to](https://cloud.yandex.com/en-ru/docs/billing/operations/create-new-account)
+- Yandex Cloud account that has a payment method activated, [see how-to](https://cloud.yandex.com/en-ru/docs/billing/operations/create-new-account)
 - Yandex cloud CLI installed with `curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash` and initialized with `yc init` as explained in the [Getting started with the YC CLI manual](https://cloud.yandex.com/en-ru/docs/cli/quickstart). 
 - You will need to create a file `./terraform.tfvars` with the following content:
 ```
@@ -24,16 +24,16 @@ private_key_file  = "not passphrase-encrypted private key file located in `~./ss
 
 ## Directory content
 - `./app/` A container web app that implements a very simple function of hit count and is tested on a stand-alone machine such as localhost - here we use the same one as in [Deploy a stack to a swarm](https://docs.docker.com/engine/swarm/stack-deploy/) tutorial
-- `./` Terraform config to provision a basic YC virtual private cloud with three subnets and a number of preemptible virtual machines serving as manager or woker nodes in the Swarm cluster
-- `ansible/` Ansible playbook to bootstrap a swarm, i.e. initialize swarm, assign the 'manager' and 'worker' roles among the nodes and deploys a web app to a swarm 
-- `./dterraform` and `dansible-playbook` shell files that spawn containers from Terraform and Ansible images on docker hub. Thus one does not have to install Terraform and Ansible locally as these Docker wrappers will do the job 
+- `./` Terraform config to provision a basic YC virtual private cloud with three subnets and a number of preemptible virtual machines serving as manager or worker nodes in the Swarm cluster
+- `ansible/` Ansible playbook to bootstrap a swarm, i.e. initialize swarm, assign the 'manager' and 'worker' roles among the nodes and deploy a web app to a swarm 
+- `./dterraform` and `dansible-playbook` shell files that spawn containers from Terraform and Ansible images that are available on Docker Hub. Thus one does not have to install Terraform and Ansible locally as these Docker wrappers will do the job 
 
 ## Basic usage
 ### 1. On a first run execute
 ```
 ./dterraform init
 ```
-This will pull terraform docker image, spawn the terraform container and install the required terraform providers
+This will pull Terraform image from Docker Hub, spawn the Terraform container and install the required Terraform providers
 ### 2. To create infrastructure such as VPC, subnets, VMs and their network interfaces run
 ```
 ./dterraform apply -auto-approve
@@ -72,7 +72,7 @@ resource_public_api = [
 ```
 ./dansible-playbook -i inventory_auto playbook.yml
 ```
-Wait for a couple of minutes for bootstraping routine to complete. The successful output would look lke the following one (the non-zero numbers next to "ok" and "changed" might be different):
+Wait for a couple of minutes for bootstraping routine to complete. The successful output would look like the following one (the non-zero numbers next to "ok" and "changed" might be different):
 ```
 PLAY RECAP *************************************************************************************************************
 managers-node-ubuntu-tf-ru-central1-a-id0 : ok=13   changed=10   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
@@ -90,7 +90,11 @@ yqa8l20ggar9wvmi9cyaxgdgo     epd1obu2jqldaq3dv7q3   Ready     Active           
 uqv71jz9cm45fwc0g02hxhm0w *   fhmsftna4v32q2c7aues   Ready     Active         Leader           20.10.21
 ```
 - In the browser for each of the machine try the URL `http://<public IP>:8000`. Regardless of the IP being called the outcome would look like `Hello World! I have been seen X times.` where X adds up every time we hit any of the machine in the cluster.
-- Ssh into each machine in the swarm and run `docker ps`. You would likely see that the containers are spread across the swarm. The app container would run on one node, the redis container on a different one, and there will be no single node that runs all both containers together.   
-> This is the very basic demonstration of Swarm Routing Mesh. The application behavior would be similar on every endpoint exposed to the outer world. Under the hood the containers are distributed across the Swarm nodes while Swarm take care of combining them together. More information on Swarn Routing Mesh is available in [Docker tutorials](https://docs.docker.com/engine/swarm/ingress/)  
+- Ssh into each machine in the swarm and run `docker ps`. You would likely see that the containers are spread across the swarm. The app container would run on one node, the redis container on a different one, and there will be no single node that runs all containers together.   
+> This is the very basic demonstration of Swarm Routing Mesh. The application behavior would be similar on every endpoint exposed to the outer world. Under the hood the containers are distributed across the Swarm nodes while Swarm takes care of combining them together. More information on Swarm Routing Mesh is available in [Docker tutorials](https://docs.docker.com/engine/swarm/ingress/)
+### 5. Destroy infrastructure if you no longer need it
+Run `./dterraform destroy -auto-approve` and look into [cloud console](https://console.cloud.yandex.ru/) to ensure that no unnecessary infrastructure is causing unexpected charges 
+
+Also time to time run `docker container prune` command to remove the exited containers 
 
 
