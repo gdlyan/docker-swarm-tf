@@ -40,9 +40,9 @@ This will pull Terraform image from Docker Hub, spawn the Terraform container an
 ```
 This will create a network and three subnets. In each of those subnets a low-tier Ubuntu VM will be spawned with Docker and Compose installed. Each VM will be assigned with a dynamic public IP and be accessible via `ssh -i ~/.ssh/<private_key_file> <default_user>@<public IP>`. 
 
-Also this command will create an __Ansible inventory__ file  `./ansible/iventory_auto`. It's purpose is to link the VMs to their roles in swarm: one of the nodes will further become a manager, others - workers. As the IP are assigned to VMs dynamically we may not be aware of the nodes' network addresses before the VMs are actually created, hence we generate inventory in a dynamic manner either.
+Also this command will create an __Ansible inventory__ file  `./ansible/iventory_auto`. It's purpose is to link the VMs to their roles in swarm: one of the nodes will further become a manager, others - workers. Because IP addresses are assigned to VMs dynamically, we may not be aware of the nodes' network addresses before the VMs are created, so we generate inventory in a dynamic manner as well.
 
-The successful output would look like similar to the  following one:
+The result would look like the one below if it worked:
 ```
 Apply complete! Resources: 8 added, 0 changed, 0 destroyed.
 
