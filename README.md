@@ -3,8 +3,8 @@ Terraform &amp; Ansible config for arbitrary web application deployment on a Swa
 
 ## Use case
 The purpose of this configuration is to ease the learning curve of a full-stack developer who just ramps up with IaC (Infrastructure as Code) 
-- Familiarize oneself with Swarm by spawning a low-scale hence low-cost toy cluster on Yandex Cloud with as little prerequsites and effort as possible (literally two `docker run` shell commands that can be further combined into a pipeline)
-- Test containered web apps in Swarm and observe their behavior at scale
+- Quickstart with Swarm by spawning a low-scale hence low-cost toy cluster on Yandex Cloud with as little prerequsites and effort as possible (literally two `docker run` shell commands that can be further combined into a pipeline)
+- Explore the behavior of the containerized web apps in Swarm
 - Use the configuration as a source of snippets to copy-paste from   
 
 ## Requirements
@@ -23,7 +23,7 @@ private_key_file  = "not passphrase-encrypted private key file located in `~./ss
 ```
 
 ## Directory content
-- `./app/` A container web app that implements a very simple function of hit count and is tested on a stand-alone machine such as localhost - here we use the same one as in [Deploy a stack to a swarm](https://docs.docker.com/engine/swarm/stack-deploy/) tutorial
+- `./app/` A containerized web app that implements a very simple function of hit count and is tested on a stand-alone machine such as localhost - here we use the same one as in [Deploy a stack to a swarm](https://docs.docker.com/engine/swarm/stack-deploy/) tutorial
 - `./` Terraform config to provision a basic YC virtual private cloud with three subnets and a number of preemptible virtual machines serving as manager or worker nodes in the Swarm cluster
 - `ansible/` Ansible playbook to bootstrap a swarm, i.e. initialize swarm, assign the 'manager' and 'worker' roles among the nodes and deploy a web app to a swarm 
 - `./dterraform` and `dansible-playbook` shell files that spawn containers from Terraform and Ansible images that are available on Docker Hub. Thus one does not have to install Terraform and Ansible locally as these Docker wrappers will do the job 
@@ -67,6 +67,8 @@ resource_public_api = [
   "For swarm initialization run the command: './dansible-playbook -i inventory_auto playbook.yml'",
 ]
 ```
+> **!!! PLEASE DON'T FORGET TO DESTROY THE INFRASTRUCTURE WHEN YOU ARE DONE !!!**
+> 
 > *Note that since this very moment the platform starts charging you for the provisioned infrastructure. The amount should not be dramatic as the VMs are provisioned preemptible and at minimal configuration. Still be sure to destroy the infrastructure when you figure out you no longer need it for your experiments (see the last step with `./dterraform destroy -auto-approve` command).*
 ### 3. To run the Ansible play that initializes the Swarm, attaches the worker nodes to the manager node and launchs a container try:
 ```
