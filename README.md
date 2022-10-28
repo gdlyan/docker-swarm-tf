@@ -70,7 +70,7 @@ resource_public_api = [
 > **!!! PLEASE DON'T FORGET TO DESTROY THE INFRASTRUCTURE WHEN YOU ARE DONE !!!**
 > 
 > *Note that since this very moment the platform starts charging you for the provisioned infrastructure. The amount should not be dramatic as the VMs are provisioned preemptible and at minimal configuration. Still be sure to destroy the infrastructure when you figure out you no longer need it for your experiments (see the last step with `./dterraform destroy -auto-approve` command).*
-### 3. To run the Ansible play that initializes the Swarm, attaches the worker nodes to the manager node and launchs a container try:
+### 3. To run the Ansible play that initializes the Swarm, attaches the worker nodes to the manager node and launches a containerized app try:
 ```
 ./dansible-playbook -i inventory_auto playbook.yml
 ```
