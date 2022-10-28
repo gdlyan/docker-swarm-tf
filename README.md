@@ -55,12 +55,12 @@ resource_public_api = [
       "public_ip": "<public IP 1>"
       "ssh_command": "ssh -i ~/.ssh/<private_key_file> <default_user>@<public IP 1>"
   - "workers-node-ubuntu-tf-ru-central1-b-id1":
-      "private_ip": "10.129.0.9"
-      "public_ip": "158.160.17.232"
+      "private_ip": "10.<internal IP 2>"
+      "public_ip": "<public IP 2>"
       "ssh_command": "ssh -i ~/.ssh/<private_key_file> <default_user>@<public IP 2>"
   - "workers-node-ubuntu-tf-ru-central1-c-id2":
-      "private_ip": "10.130.0.20"
-      "public_ip": "51.250.33.215"
+      "private_ip": "10.<internal IP 3>"
+      "public_ip": "<public IP 3>"
       "ssh_command": "ssh -i ~/.ssh/<private_key_file> <default_user>@<public IP 2>"
 
   EOT,
