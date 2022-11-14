@@ -4,3 +4,4 @@
 .terraform.lock.hcl
 nginx
 key.json
+*.swp
